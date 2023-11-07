@@ -2,7 +2,6 @@
 from apscheduler.job import Job
 
 from scheduler.Scheduler import scheduler
-from dao.schedulerDao import scheduler_dao
 
 class SchedulerFactory:
     """
@@ -40,7 +39,6 @@ class SchedulerFactory:
             if(job is None):
                 scheduler.add_job(_id, self.get_func(func), **argss)
         tmp_scheduler = self.get_job_info(_id, name, trigger, func, args)
-        scheduler_dao.upsert_tmp_scheduler(tmp_scheduler)
 
     def get_func(self, func):
         return f"scheduler.SchedulerMethod:{func.__name__}"

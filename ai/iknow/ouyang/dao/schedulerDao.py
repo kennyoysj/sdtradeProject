@@ -37,4 +37,4 @@ class SchedulerDao():
         self.__tmp_scheduler_col.update({"_id": scheduler_info["_id"]}, {"$set": scheduler_info}, upsert=True)
 
 
-scheduler_dao = SchedulerDao()
+# scheduler_dao = SchedulerDao()
