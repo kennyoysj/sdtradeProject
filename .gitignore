@@ -1,0 +1,38 @@
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directory
+# https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
+node_modules
+
+### Ignore all generated files from rdash gulp system
+dist
+src/components
+nohup.out
+data/*
+
+### ignore .idea
+*.xml
+*.iml
+*.csv
+
+### ignore .pyc
+*.pyc
+
+### ignore CRF
+CRF*
+.idea/*
+
+### ignore properties
+#properties.py
+service/*.txt
+service/*.csv
+service/*.zip
