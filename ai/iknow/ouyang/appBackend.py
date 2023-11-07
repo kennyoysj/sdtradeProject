@@ -2,7 +2,7 @@
 import multiprocessing
 
 from appConfig import app
-# import backend
+import backend
 from apscheduler.jobstores.base import ConflictingIdError
 from scheduler.Scheduler import scheduler
 from scheduler.SchedulerServer import scheduler_factory
