@@ -3,12 +3,11 @@ from appConfig import app
 from controller.FileController import file_con
 
 
-
 @app.route('/api/uploadFile', methods=['POST'])
 def uplodaFile():
-	if request.method == 'POST':
-		return file_con.upload(request)
-	return """
+    if request.method == 'POST':
+        return file_con.upload(request)
+    return """
 	    <!doctype html>
 	    <title>Upload new File</title>
 	    <h1>Upload new File</h1>
@@ -20,8 +19,6 @@ def uplodaFile():
 	    """ % "<br>"
 
 
-app.route('/api/test', methods=['POST',"GET"])
+@app.route('/api/test', methods=['POST', "GET"])
 def test():
-	if request.method == 'POST':
-		return file_con.test(request)
-
+    return file_con.test(request, need_list=["param"])
