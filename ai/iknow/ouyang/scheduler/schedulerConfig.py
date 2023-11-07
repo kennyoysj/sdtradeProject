@@ -27,7 +27,7 @@ def init_scheduler():
         "type": "cron",
         "hour": 9,
         "minute": 25
-    }, test, "param1"))
+    }, test, ("param1",)))
     return jobs
 
 
