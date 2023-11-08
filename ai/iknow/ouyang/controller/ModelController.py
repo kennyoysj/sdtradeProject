@@ -13,7 +13,6 @@ class ModelController:
 
     def getResult(self):
         today = datetime.datetime.now().strftime(tushare_time_format)
-        job_times["getBSM%s" % today] = 100
         if(job_times.get("getBSM%s" % today,-1) < 0): return generate_result(200,"mission hasn't start")
         elif(job_times["getBSM%s" % today] < 100): return generate_result(200, "mission complete %s%s" % (str(job_times["getBSM"]),"%"))
 
