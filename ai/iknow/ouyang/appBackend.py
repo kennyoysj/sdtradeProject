@@ -5,7 +5,6 @@ from appConfig import app
 import backend
 from apscheduler.jobstores.base import ConflictingIdError
 from scheduler.Scheduler import scheduler
-from scheduler.SchedulerServer import scheduler_factory
 from scheduler.schedulerConfig import SchedulerConfig
 import platform
 

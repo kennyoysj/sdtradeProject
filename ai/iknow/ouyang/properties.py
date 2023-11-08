@@ -41,3 +41,15 @@ access_key_id = ""
 access_key_secret = ""
 
 project_base_path = os.path.dirname(os.path.abspath(__file__))
+
+job_times = {
+"getBSM":-1
+}
+
+if(__name__ == "__main__"):
+    today = datetime.datetime.now().strftime(tushare_time_format)
+    print(today)
+    file_path = "result%s%s%s.csv" % (os.sep, "option_last_", today)
+    print(file_path)
+    print(os.path.exists(file_path))
+    print("任务完成度%s%s" % (str(job_times["getBSM"]),"%"))

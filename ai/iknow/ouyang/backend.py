@@ -1,6 +1,7 @@
 from flask import request
 from appConfig import app
 from controller.FileController import file_con
+from controller.ModelController import model_con
 
 
 @app.route('/api/uploadFile', methods=['POST'])
@@ -22,3 +23,7 @@ def uplodaFile():
 @app.route('/api/test', methods=['POST', "GET"])
 def test():
     return file_con.test(request, need_list=["param"])
+
+@app.route('/api/getResult',methods=["GET"])
+def getResult():
+    return model_con.getResult()
