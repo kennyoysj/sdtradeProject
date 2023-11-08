@@ -26,7 +26,8 @@ def init_scheduler():
     jobs.append(scheduler_factory.get_job_info("static_times", "getBSM", {
         "type": "cron",
         "hour": 9,
-        "minute": 25
+        "minute": 25,
+        "second": 20
     }, getBSM,None))
     return jobs
 
