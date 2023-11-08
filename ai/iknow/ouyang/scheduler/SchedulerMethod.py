@@ -74,7 +74,7 @@ def getBSM():
             index +=1
             job_times["getBSM%s" % today] = round(index/job_len*100,2)
         df = pd.DataFrame.from_dict(datas)
-        df.to_csv("%s%s%s%s.csv" % (path,os.sep,"option_last_", today),encoding="utf-8")
+        df.to_csv("%s%s%s%s.csv" % (path,os.sep,"option_last_", today), encoding="gbk")
         job_times["getBSM%s" % today] = 100
         print("getBSM END")
 
