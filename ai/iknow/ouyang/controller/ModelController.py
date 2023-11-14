@@ -20,8 +20,7 @@ class ModelController:
         return send_file(file_path)
     def BMSSigma(self):
         keys = sorted(bms_result.keys())
-        result = [bms_result.get(k) for k in keys]
-        return generate_result(200, result)
+        return generate_result(200, bms_result)
 
 
 

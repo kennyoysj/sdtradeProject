@@ -1,9 +1,10 @@
 alibabacloud-dysmsapi20170525==2.0.23
 Flask==2.3.3
-Flask-APScheduler==1.12.4
+Flask-APScheduler==1.13.0
 Flask-Cors==3.0.10
 pymongo==4.3.3
 redis==4.4.0
 pycryptodome==3.16.0
 numpy==1.24.4
 pandas==2.0.3
+scipy==1.10.1

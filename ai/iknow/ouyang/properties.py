@@ -29,6 +29,7 @@ file_suffix = '.csv'
 
 encoding = "utf-8"
 
+
 def getTimeStamp(t):
     if(isinstance(t, str)):
         t = datetime.datetime.strptime(t, "%Y%m%d%H%M%S%f")
@@ -46,6 +47,8 @@ job_times = {
 risk_free_rate = 0.0245
 
 bms_result = {}
+
+name_checks = ["沪深300","上证50","中证100","中证500"]
 if(__name__ == "__main__"):
 
     today = datetime.datetime.now().strftime(tushare_time_format)
