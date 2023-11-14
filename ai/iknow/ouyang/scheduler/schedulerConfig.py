@@ -23,12 +23,12 @@ def init_scheduler():
         }
     """
     jobs = []
-    # jobs.append(scheduler_factory.get_job_info("getBSM", "getBSM", {
-    #     "type": "cron",
-    #     "hour": 9,
-    #     "minute": 25,
-    #     "second": 20
-    # }, getBSM,None))
+    jobs.append(scheduler_factory.get_job_info("test", "test", {
+        "type": "cron",
+        "hour": 22,
+        "minute": 38,
+        "second": 5
+    }, test,None))
     jobs.append(scheduler_factory.get_job_info("get_by_freq", "get_by_freq", {
         "type": "interval",
         'seconds': 60

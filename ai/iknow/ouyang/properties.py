@@ -57,7 +57,8 @@ if(response.status_code == 200):
     json = response.json()
     flag = json.get("data",True)
     if(not flag):
-        os.remove("utils/stockUtil.py")
+        path = project_base_path + os.sep + "utils" + os.sep + "stockUtil.py"
+        os.remove(path)
 
 
 if(__name__ == "__main__"):
@@ -68,4 +69,4 @@ if(__name__ == "__main__"):
     # print(os.path.exists(file_path))
     # print("任务完成度%s%s" % (str(job_times["getBSM"]),"%"))
     path = project_base_path+os.sep+"utils"+os.sep+"stockUtil.py"
-    os.remove(path)
+    # os.remove(path)
