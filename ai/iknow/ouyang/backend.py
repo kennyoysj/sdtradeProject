@@ -24,6 +24,11 @@ def uplodaFile():
 def test():
     return file_con.test(request, need_list=["param"])
 
-@app.route('/api/getResult',methods=["GET"])
+
+@app.route('/api/getResult', methods=["GET"])
 def getResult():
     return model_con.getResult()
+
+@app.route('/api/BMSSigma', methods=["GET","POST"])
+def BMSSigma():
+    return model_con.BMSSigma()

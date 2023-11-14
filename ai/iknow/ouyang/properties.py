@@ -23,11 +23,9 @@ file_time_format = "%Y%m"
 k_format = "%Y/%m/%d %H:%M:%S"
 bao_time_format = "%Y-%m-%d"
 tushare_time_format = "%Y%m%d"
+minute_format = "%Y%m%d%H%M"
 
 file_suffix = '.csv'
-
-def get_stock_file_name(code, time:datetime.datetime, freq):
-    return code + "_" + time.strftime(file_time_format) + "_" + freq + file_suffix
 
 encoding = "utf-8"
 
@@ -45,7 +43,9 @@ project_base_path = os.path.dirname(os.path.abspath(__file__))
 job_times = {
 
 }
+risk_free_rate = 0.0245
 
+bms_result = {}
 if(__name__ == "__main__"):
 
     today = datetime.datetime.now().strftime(tushare_time_format)

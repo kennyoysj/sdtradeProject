@@ -2,7 +2,7 @@ import datetime
 import time
 from apscheduler.executors.pool import ThreadPoolExecutor
 
-from scheduler.SchedulerMethod import test, getBSM
+from scheduler.SchedulerMethod import test, getBSM, get_by_freq
 from scheduler.SchedulerServer import scheduler_factory
 
 
@@ -23,12 +23,16 @@ def init_scheduler():
         }
     """
     jobs = []
-    jobs.append(scheduler_factory.get_job_info("static_times", "getBSM", {
-        "type": "cron",
-        "hour": 9,
-        "minute": 25,
-        "second": 20
-    }, getBSM,None))
+    # jobs.append(scheduler_factory.get_job_info("getBSM", "getBSM", {
+    #     "type": "cron",
+    #     "hour": 9,
+    #     "minute": 25,
+    #     "second": 20
+    # }, getBSM,None))
+    jobs.append(scheduler_factory.get_job_info("get_by_freq", "get_by_freq", {
+        "type": "interval",
+        'seconds': 60
+    }, get_by_freq, None))
     return jobs
 
 

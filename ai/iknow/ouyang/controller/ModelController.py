@@ -4,7 +4,7 @@ import os
 import pandas as pd
 from flask import send_file
 
-from properties import job_times, tushare_time_format
+from properties import job_times, tushare_time_format, bms_result
 from utils.AppUtil import generate_result
 
 
@@ -18,5 +18,11 @@ class ModelController:
 
         file_path = "result%s%s%s.csv" % (os.sep, "option_last_", today)
         return send_file(file_path)
+    def BMSSigma(self):
+        keys = sorted(bms_result.keys())
+        result = [bms_result.get(k) for k in keys]
+        return generate_result(200, result)
+
+
 
 model_con = ModelController()
