@@ -36,8 +36,8 @@ def get_by_freq():
         results = body.get("results")
         for each in results:
             key:str = each["name"]
-            if(not check_name(key)):
-                continue
+            # if(not check_name(key)):
+            #     continue
             start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
             job_len = len(results)
             index = 0
