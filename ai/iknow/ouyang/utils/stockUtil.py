@@ -53,10 +53,10 @@ def implied_volatility(option_price, S, K, T, r, cop:bool=True):
     # Use bisect method to find the root within a specified range
     try:
         if(cop):
-            implied_vol = bisect(objective_function, 0.001, 2)
+            implied_vol = bisect(objective_function, 0.0001, 2)
             return implied_vol
         else:
-            return bisect(put_function, 0.001,2)
+            return bisect(put_function, 0.0001, 2)
     except ValueError as e:
         return 0.000001
 
