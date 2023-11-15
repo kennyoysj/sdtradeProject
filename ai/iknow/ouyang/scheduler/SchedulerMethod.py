@@ -34,6 +34,7 @@ def get_by_freq():
     if (res.status_code == 200):
         body = res.json()
         results = body.get("results")
+        print(len(results))
         for each in results:
             key:str = each["name"]
             # if(not check_name(key)):
@@ -55,6 +56,7 @@ def get_by_freq():
                                          risk_free_rate, False)
 
             bms_result[key] = {
+                "symbol": each["symbol"],
                 "sigma": vol,
                 "update_time": today
             }
@@ -70,7 +72,7 @@ def getBSM():
     print("getBSM start")
     today = datetime.datetime.now().strftime(tushare_time_format)
     job_times["getBSM%s" % today] = -1
-    days = 250 # 股票一年的开市时间
+    days = 250  # 股票一年的开市时间
     res = requests.get("https://api.sdqtrade.com/data/option/latest")
     if(res.status_code == 200):
         body = res.json()
