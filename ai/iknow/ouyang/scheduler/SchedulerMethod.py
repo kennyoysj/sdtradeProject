@@ -54,9 +54,15 @@ def get_by_freq():
             else:
                 vol = implied_volatility(option_price, current_asset_price, strike_price, time_to_maturity,
                                          risk_free_rate, False)
-
+            if (vol < 0.001 and vol > 0.00001):
+                print(each)
             bms_result[key] = {
                 "symbol": each["symbol"],
+                "lastPrice":  each["lastPrice"],
+                "underlyingPrice": each["underlyingPrice"],
+                "strike": each["strike"],
+                "dela": dela,
+                "type": each["type"],
                 "sigma": vol,
                 "update_time": today
             }
@@ -115,6 +121,7 @@ def getBSM():
                 else:
                     result: float = put_BSM(each["underlyingPrice"], each["strike"], 0, each["sigma"] * days, 0.02,
                                              dela / 365)
+
                 datas["symbol"].append(each["symbol"])
                 datas["name"].append(each["name"])
                 datas["presetPrice"].append(("%."+str(num_length)+"f") % round(each_price, num_length))
@@ -132,15 +139,15 @@ def getBSM():
         print("getBSM END")
 
 if(__name__ == "__main__"):
-    get_by_freq()
+    # get_by_freq()
     # getBSM()
-    # option_price = 0.0029 # Replace with the actual market option price
-    # current_asset_price = 3.65  # Replace with the current asset price
-    # strike_price = 3.3  # Replace with the option's strike price
-    # time_to_maturity = 43 / 365  # Replace with the time to maturity in years
-    # risk_free_rate = 0.02451  # Replace with the risk-free interest rate
-    # vol = implied_volatility(option_price,current_asset_price, strike_price, time_to_maturity, risk_free_rate,False)
-    # print(vol)
+    option_price = 289.8 # Replace with the actual market option price
+    current_asset_price = 3572.36  # Replace with the current asset price
+    strike_price = 3300  # Replace with the option's strike price
+    time_to_maturity = 29 / 365  # Replace with the time to maturity in years
+    risk_free_rate = 0.02451  # Replace with the risk-free interest rate
+    vol = implied_volatility(option_price,current_asset_price, strike_price, time_to_maturity, risk_free_rate,True)
+    print(vol)
     # print(call_BSM(current_asset_price,strike_price,0, vol,0.0245, time_to_maturity))
     print("沪深300ETF购3月4100".find("沪深e300"))
     pass
