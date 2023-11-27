@@ -29,6 +29,6 @@ def test():
 def getResult():
     return model_con.getResult()
 
-@app.route('/api/BMSSigma', methods=["GET","POST"])
-def BMSSigma():
-    return model_con.BMSSigma()
+@app.route('/api/BMSSigma/<az>', methods=["GET","POST"])
+def BMSSigma(az):
+    return model_con.BMSSigma(az)
