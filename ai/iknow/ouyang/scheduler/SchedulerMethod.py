@@ -35,9 +35,9 @@ def get_by_freq():
         body = res.json()
         results = body.get("results")
         print(len(results))
-        free_rate = get_risk_free_rate("CN")/100
+        free_rate = float(get_risk_free_rate("CN"))/100
         for each in results:
-            key:str = each["name"]
+            key: str = each["name"]
             start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
             end_day = datetime.datetime.strptime(each["expirationDate"], bao_time_format)
             dela = (end_day - start_day).days
@@ -53,7 +53,7 @@ def get_by_freq():
                                          free_rate, False)
             if (vol < 0.001 and vol > 0.00001):
                 print(each)
-            delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate, each["type"])
+            delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate, dela, each["type"])
             leverage = current_asset_price / option_price
             actual_leverage = leverage * delta
             bms_result[key] = {
@@ -104,7 +104,7 @@ def calculate_hk_index():
                                          free_rate, False)
             if (vol < 0.001 and vol > 0.00001):
                 print(each)
-            delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate,each["type"])
+            delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate,dela,each["type"])
             leverage = current_asset_price/option_price
             actual_leverage = leverage*delta
             hk_index_result[key] = {
