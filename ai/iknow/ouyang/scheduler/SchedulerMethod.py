@@ -37,7 +37,7 @@ def get_by_freq():
         print(len(results))
         free_rate = float(get_risk_free_rate("CN"))/100
         for each in results:
-            key: str = each["name"]
+            key: str = each["symbol"]
             start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
             end_day = datetime.datetime.strptime(each["expirationDate"], bao_time_format)
             dela = (end_day - start_day).days
