@@ -91,7 +91,7 @@ def calculate_hk_index():
         results = body.get("results")
         free_rate = get_risk_free_rate("HK")/100
         for each in results:
-            key: str = each["name"]
+            key: str = each["symbol"]
             start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
             end_day = datetime.datetime.strptime(each["expirationDate"], bao_time_format)
             dela = (end_day - start_day).days
