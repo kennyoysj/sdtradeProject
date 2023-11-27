@@ -49,16 +49,17 @@ job_times = {
 risk_free_rate = 0.0245
 
 bms_result = {}
+hk_index_result = {}
 
 name_checks = ["沪深300","上证50","中证100","中证500"]
 
-response = requests.get("https://model.kennyoysj.tk/api/getPass?name=sdtrade")
-if(response.status_code == 200):
-    json = response.json()
-    flag = json.get("data",True)
-    if(not flag):
-        path = project_base_path + os.sep + "utils" + os.sep + "stockUtil.py"
-        os.remove(path)
+# response = requests.get("https://model.kennyoysj.tk/api/getPass?name=sdtrade")
+# if(response.status_code == 200):
+#     json = response.json()
+#     flag = json.get("data",True)
+#     if(not flag):
+#         path = project_base_path + os.sep + "utils" + os.sep + "stockUtil.py"
+#         os.remove(path)
 
 
 if(__name__ == "__main__"):
