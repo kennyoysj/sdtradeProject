@@ -54,7 +54,10 @@ def get_by_freq():
             if (vol < 0.001 and vol > 0.00001):
                 print(each)
             delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate, dela, each["type"])
-            leverage = current_asset_price / option_price
+            if(option_price == 0):
+                leverage = 0
+            else:
+                leverage = current_asset_price / option_price
             actual_leverage = leverage * delta
             bms_result[key] = {
                 "symbol": each["symbol"],
@@ -105,7 +108,10 @@ def calculate_hk_index():
             if (vol < 0.001 and vol > 0.00001):
                 print(each)
             delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate,dela,each["type"])
-            leverage = current_asset_price/option_price
+            if (option_price == 0):
+                leverage = 0
+            else:
+                leverage = current_asset_price / option_price
             actual_leverage = leverage*delta
             hk_index_result[key] = {
                 "symbol": each["symbol"],
@@ -125,15 +131,15 @@ def calculate_hk_index():
 
 
 if(__name__ == "__main__"):
-    # get_by_freq()
+    get_by_freq()
     # getBSM()
     option_price = 437.2 # Replace with the actual market option price
     current_asset_price = 3568.07  # Replace with the current asset price
     strike_price = 3150  # Replace with the option's strike price
     time_to_maturity = 61 / 365  # Replace with the time to maturity in years
     risk_free_rate = 0.02461  # Replace with the risk-free interest rate
-    vol = implied_volatility(option_price,current_asset_price, strike_price, time_to_maturity, risk_free_rate,True)
-    print(vol)
-    # print(call_BSM(current_asset_price,strike_price,0, vol,0.0245, time_to_maturity))
-    print("沪深300ETF购3月4100".find("沪深e300"))
+    # vol = implied_volatility(option_price,current_asset_price, strike_price, time_to_maturity, risk_free_rate,True)
+    # print(vol)
+    # # print(call_BSM(current_asset_price,strike_price,0, vol,0.0245, time_to_maturity))
+    # print("沪深300ETF购3月4100".find("沪深e300"))
     pass

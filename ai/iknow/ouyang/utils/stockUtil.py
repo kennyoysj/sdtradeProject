@@ -51,7 +51,6 @@ def black_scholes_put(S, K, T, r, sigma):
     d1 = (np.log(S / K) + (r + 0.5 * sigma**2) * T) / (sigma * np.sqrt(T))
     d2 = d1 - sigma * np.sqrt(T)
     put_price = K * np.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
-    print(put_price)
     return put_price
 
 def implied_volatility(option_price, S, K, T, r, cop:bool=True):
