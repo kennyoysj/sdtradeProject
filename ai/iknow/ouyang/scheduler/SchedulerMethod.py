@@ -76,7 +76,7 @@ def get_by_freq():
                 "actual_leverage": actual_leverage,
                 "create_time": datetime.datetime.strptime(today, minute_format)
             }
-            if (each.get("maket", "").upper() == "OPEN" or today[-4:] == "1500"):
+            if (each.get("CNmaket","").upper()=="OPEN" or today[-4:] == "1500"):
                 each["_id"] = generate_token(each["symbol"], today)
                 insert_list.append(each)
         res_dao.insertResult(insert_list, "CN")
@@ -136,7 +136,7 @@ def calculate_hk_index():
                 "actual_leverage": actual_leverage,
                 "create_time": datetime.datetime.strptime(today,minute_format)
             }
-            if(each.get("maket","").upper()=="OPEN" or today[-4:] == "1600"):
+            if(each.get("HKmaket","").upper()=="OPEN" or each.get("HKnightmaket","").upper()=="OPEN" or today[-4:] == "1600"):
                 each["_id"] = generate_token(each["symbol"], today)
                 insert_list.append(each)
         res_dao.insertResult(insert_list,"HK")
