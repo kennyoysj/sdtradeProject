@@ -9,7 +9,7 @@ mongo_uri = "mongodb://stock:sd123456sd@localhost:27017"
 redis_host = 'localhost'
 redis_port = 6379
 
-db = "modelDB"
+db = "stock"
 user_col = "user"
 config_col = "config"
 check_result_col = "check_result"
