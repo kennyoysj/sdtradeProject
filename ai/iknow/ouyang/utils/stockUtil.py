@@ -77,6 +77,7 @@ def calculate_leverage(notional_value, option_price):
 
 
 def calculate_delta(S, K, T, r, sigma, call_or_put):
+    if(T<0): return 1
     d1 = (math.log(S / K) + (r + 0.5 * sigma ** 2) * T) / (sigma * math.sqrt(T))
     if call_or_put == "C":
         delta = norm.cdf(d1)
