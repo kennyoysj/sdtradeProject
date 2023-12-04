@@ -2,7 +2,7 @@ import datetime
 import time
 from apscheduler.executors.pool import ThreadPoolExecutor
 
-from scheduler.SchedulerMethod import test, get_by_freq, calculate_hk_index
+from scheduler.SchedulerMethod import test, get_by_freq, calculate_hk_index, update_hk_index, update_cn_index
 from scheduler.SchedulerServer import scheduler_factory
 
 
@@ -37,6 +37,18 @@ def init_scheduler():
         "type": "interval",
         'seconds': 60
     }, calculate_hk_index, None))
+    jobs.append(scheduler_factory.get_job_info("update_hk_index", "update_hk_index", {
+        "type": "cron",
+        "hour": 16,
+        "minute": 5,
+        "second": 5
+    }, update_hk_index, None))
+    jobs.append(scheduler_factory.get_job_info("update_cn_index", "update_cn_index", {
+        "type": "cron",
+        "hour": 15,
+        "minute": 5,
+        "second": 5
+    }, update_cn_index, None))
     return jobs
 
 

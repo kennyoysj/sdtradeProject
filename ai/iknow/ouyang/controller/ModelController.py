@@ -22,7 +22,7 @@ class ModelController:
         # keys = sorted(bms_result.keys())
         if(az is None or az.upper() == "CN"):
             result = bms_result
-        elif(az == "HK"):
+        elif(az.upper() == "HK"):
             result = hk_index_result
         return generate_result(200, result)
 

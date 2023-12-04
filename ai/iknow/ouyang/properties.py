@@ -3,9 +3,8 @@ import datetime
 import time
 import os
 
-import requests
 
-mongo_uri = ""
+mongo_uri = "mongodb://stock:sd123456sd@localhost:27017"
 
 redis_host = 'localhost'
 redis_port = 6379
@@ -50,6 +49,8 @@ risk_free_rate = 0.0245
 
 bms_result = {}
 hk_index_result = {}
+hk_average_result = {}
+cn_average_result = {}
 
 name_checks = ["沪深300","上证50","中证100","中证500"]
 
