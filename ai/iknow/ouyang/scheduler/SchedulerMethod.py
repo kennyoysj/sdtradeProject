@@ -76,16 +76,25 @@ def get_by_freq():
                 "actual_leverage": actual_leverage,
                 "create_time": datetime.datetime.strptime(today, minute_format)
             }
-            if (each.get("CNmaket","").upper()=="OPEN" or today[-4:] == "1500"):
+            time_num = int(today[-4:])
+            if (each.get("CNmaket","").upper()=="OPEN" or check_cn_time(time_num)):
                 each["_id"] = generate_token(each["symbol"], today)
                 insert_list.append(each)
         res_dao.insertResult(insert_list, "CN")
     print("get_by_freq end",len(bms_result.keys()))
-
+def check_cn_time(time_num:int):
+    if((time_num >= 930 and time_num <= 1130) or (1300 <= time_num and time_num <= 1500) ):
+        return True
+    return False
 def check_name(name:str):
     for each in name_checks:
         if(name.find(each)>=0):
             return True
+    return False
+
+def check_hk_time(time_num:int):
+    if((time_num >= 930 and time_num <= 1200) or (1300 <= time_num and time_num <= 1600) or (time_num <= 300) or (time_num >= 1715)):
+        return True
     return False
 
 def calculate_hk_index():
@@ -136,7 +145,8 @@ def calculate_hk_index():
                 "actual_leverage": actual_leverage,
                 "create_time": datetime.datetime.strptime(today,minute_format)
             }
-            if(each.get("HKmaket","").upper()=="OPEN" or each.get("HKnightmaket","").upper()=="OPEN" or today[-4:] == "1600"):
+            time_num = int(today[-4:])
+            if(each.get("HKmaket","").upper()=="OPEN" or each.get("HKnightmaket","").upper()=="OPEN" or check_hk_time(time_num)):
                 each["_id"] = generate_token(each["symbol"], today)
                 insert_list.append(each)
         res_dao.insertResult(insert_list,"HK")
