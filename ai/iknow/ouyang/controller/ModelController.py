@@ -4,7 +4,7 @@ import os
 import pandas as pd
 from flask import send_file
 
-from properties import job_times, tushare_time_format, bms_result, hk_index_result
+from properties import job_times, tushare_time_format, bms_result, hk_index_result, hk_average_result, cn_average_result
 from utils.AppUtil import generate_result
 
 
@@ -22,8 +22,12 @@ class ModelController:
         # keys = sorted(bms_result.keys())
         if(az is None or az.upper() == "CN"):
             result = bms_result
+            for key in result.keys():
+                result[key]["average_leverage"] = cn_average_result.get(key)
         elif(az.upper() == "HK"):
             result = hk_index_result
+            for key in result.keys():
+                result[key]["average_leverage"] = hk_average_result.get(key)
         return generate_result(200, result)
 
 
