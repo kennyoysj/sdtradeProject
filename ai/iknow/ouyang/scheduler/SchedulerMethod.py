@@ -62,7 +62,7 @@ def get_by_freq():
             else:
                 leverage = current_asset_price / option_price
             actual_leverage = leverage * delta
-            bms_result[key] = {
+            res_data = {
                 "symbol": each["symbol"],
                 "lastPrice":  each["lastPrice"],
                 "underlyingPrice": each["underlyingPrice"],
@@ -76,10 +76,11 @@ def get_by_freq():
                 "actual_leverage": actual_leverage,
                 "create_time": datetime.datetime.strptime(today, minute_format)
             }
+            bms_result[key] = res_data
             time_num = int(today[-4:])
             if (each.get("CNmaket","").upper()=="OPEN" or check_cn_time(time_num)):
-                each["_id"] = generate_token(each["symbol"], today)
-                insert_list.append(each)
+                res_data["_id"] = generate_token(each["symbol"], today)
+                insert_list.append(res_data)
         res_dao.insertResult(insert_list, "CN")
     print("get_by_freq end",len(bms_result.keys()))
 def check_cn_time(time_num:int):
@@ -131,7 +132,7 @@ def calculate_hk_index():
             else:
                 leverage = current_asset_price / option_price
             actual_leverage = leverage*delta
-            hk_index_result[key] = {
+            res_data = {
                 "symbol": each["symbol"],
                 "lastPrice":  each["lastPrice"],
                 "underlyingPrice": each["underlyingPrice"],
@@ -145,11 +146,12 @@ def calculate_hk_index():
                 "actual_leverage": actual_leverage,
                 "create_time": datetime.datetime.strptime(today,minute_format)
             }
+            hk_index_result[key] = res_data
             time_num = int(today[-4:])
             if(each.get("HKmaket","").upper()=="OPEN" or each.get("HKnightmaket","").upper()=="OPEN" or check_hk_time(time_num)):
-                each["_id"] = generate_token(each["symbol"], today)
-                insert_list.append(each)
-        res_dao.insertResult(insert_list,"HK")
+                res_data["_id"] = generate_token(each["symbol"], today)
+                insert_list.append(res_data)
+        res_dao.insertResult(insert_list, "HK")
 
 def update_hk_index():
     limit = 1500
