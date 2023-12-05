@@ -4,7 +4,7 @@ import time
 import os
 
 
-mongo_uri = "mongodb://stock:sd123456sd@localhost:27017"
+mongo_uri = "mongodb://stock:sd123456sd@localhost:27017/stock"
 
 redis_host = 'localhost'
 redis_port = 6379
