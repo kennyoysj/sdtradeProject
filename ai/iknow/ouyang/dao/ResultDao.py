@@ -10,6 +10,7 @@ class ResultDao():
 
 
     def insertResult(self,datas,az):
+        if(datas == []): return
         col = self.mon_conn[az]
         col.insert_many(datas)
 
