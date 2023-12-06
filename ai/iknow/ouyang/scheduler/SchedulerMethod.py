@@ -2,6 +2,7 @@ import datetime
 import os
 import signal
 import sys
+from traceback import print_exc
 
 import requests
 
@@ -40,48 +41,52 @@ def get_by_freq():
         print("get_by_freq ",len(results))
         free_rate = float(get_risk_free_rate("CN"))/100
         for each in results:
-            key: str = each["symbol"]
-            start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
-            end_day = datetime.datetime.strptime(each["expirationDate"], bao_time_format)
-            dela = (end_day - start_day).days
-            option_price = each["lastPrice"]  # Replace with the actual market option price
-            current_asset_price = each["underlyingPrice"]  # Replace with the current asset price
-            strike_price = each["strike"]  # Replace with the option's strike price
-            time_to_maturity = dela / 365  # Replace with the time to maturity in years
-            if(each["type"] == 'C'): # call action
-                vol = implied_volatility(option_price, current_asset_price, strike_price, time_to_maturity,
-                                         free_rate)
-            else:
-                vol = implied_volatility(option_price, current_asset_price, strike_price, time_to_maturity,
-                                         free_rate, False)
-            if (vol < 0.001 and vol > 0.00001):
-                print(each)
-            sigma = get_sigma(each.get("sigma"),"CN")
-            delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate, sigma, each["type"])
-            if(option_price == 0):
-                leverage = 0
-            else:
-                leverage = current_asset_price / option_price
-            actual_leverage = leverage * delta
-            res_data = {
-                "symbol": each["symbol"],
-                "lastPrice":  each["lastPrice"],
-                "underlyingPrice": each["underlyingPrice"],
-                "strike": each["strike"],
-                "dela": dela,
-                "type": each["type"],
-                "sigma": vol,
-                "update_time": today,
-                "delta": delta,
-                "leverage": leverage,
-                "actual_leverage": actual_leverage,
-                "create_time": datetime.datetime.strptime(today, minute_format)
-            }
-            bms_result[key] = res_data
-            time_num = int(today[-4:])
-            if (each.get("CNmaket","").upper()=="OPEN" or check_cn_time(time_num)):
-                res_data["_id"] = generate_token(each["symbol"], today)
-                insert_list.append(res_data)
+            try:
+                key: str = each["symbol"]
+                start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
+                end_day = datetime.datetime.strptime(each["expirationDate"], bao_time_format)
+                dela = (end_day - start_day).days
+                option_price = each["lastPrice"]  # Replace with the actual market option price
+                current_asset_price = each["underlyingPrice"]  # Replace with the current asset price
+                strike_price = each["strike"]  # Replace with the option's strike price
+                time_to_maturity = dela / 365  # Replace with the time to maturity in years
+                if(each["type"] == 'C'): # call action
+                    vol = implied_volatility(option_price, current_asset_price, strike_price, time_to_maturity,
+                                             free_rate)
+                else:
+                    vol = implied_volatility(option_price, current_asset_price, strike_price, time_to_maturity,
+                                             free_rate, False)
+                if (vol < 0.001 and vol > 0.00001):
+                    print(each)
+                sigma = get_sigma(each.get("sigma"),"CN")
+                delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate, sigma, each["type"])
+                if(option_price == 0):
+                    leverage = 0
+                else:
+                    leverage = current_asset_price / option_price
+                actual_leverage = leverage * delta
+                res_data = {
+                    "symbol": each["symbol"],
+                    "lastPrice":  each["lastPrice"],
+                    "underlyingPrice": each["underlyingPrice"],
+                    "strike": each["strike"],
+                    "dela": dela,
+                    "type": each["type"],
+                    "sigma": vol,
+                    "update_time": today,
+                    "delta": delta,
+                    "leverage": leverage,
+                    "actual_leverage": actual_leverage,
+                    "create_time": datetime.datetime.strptime(today, minute_format)
+                }
+                bms_result[key] = res_data
+                time_num = int(today[-4:])
+                if (each.get("CNmaket","").upper()=="OPEN" or check_cn_time(time_num)):
+                    res_data["_id"] = generate_token(each["symbol"], today)
+                    insert_list.append(res_data)
+            except Exception as e:
+                print("Exception", each)
+                print_exc()
         res_dao.insertResult(insert_list, "CN")
     print("get_by_freq end", len(insert_list))
 def check_cn_time(time_num:int):
@@ -113,48 +118,52 @@ def calculate_hk_index():
         free_rate = get_risk_free_rate("HK")/100
         print("calculate_hk_index len", len(results))
         for each in results:
-            key: str = each["symbol"]
-            start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
-            end_day = datetime.datetime.strptime(each["expirationDate"], bao_time_format)
-            dela = (end_day - start_day).days
-            option_price = each["lastPrice"]  # Replace with the actual market option price
-            current_asset_price = each["underlyingPrice"]  # Replace with the current asset price
-            strike_price = each["strike"]  # Replace with the option's strike price
-            time_to_maturity = dela / 365  # Replace with the time to maturity in years
-            if(each["type"] == 'C'): # call action
-                vol = implied_volatility(option_price, current_asset_price, strike_price, time_to_maturity,
-                                         free_rate)
-            else:
-                vol = implied_volatility(option_price, current_asset_price, strike_price, time_to_maturity,
-                                         free_rate, False)
-            if (vol < 0.001 and vol > 0.00001):
-                print(each)
-            sigma = get_sigma(each.get("sigma"), "HK")
-            delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate,sigma,each["type"])
-            if (option_price == 0):
-                leverage = 0
-            else:
-                leverage = current_asset_price / option_price
-            actual_leverage = leverage*delta
-            res_data = {
-                "symbol": each["symbol"],
-                "lastPrice":  each["lastPrice"],
-                "underlyingPrice": each["underlyingPrice"],
-                "strike": each["strike"],
-                "dela": dela,
-                "type": each["type"],
-                "sigma": vol,
-                "update_time": today,
-                "delta": delta,
-                "leverage": leverage,
-                "actual_leverage": actual_leverage,
-                "create_time": datetime.datetime.strptime(today,minute_format)
-            }
-            hk_index_result[key] = res_data
-            time_num = int(today[-4:])
-            if(each.get("HKmaket","").upper()=="OPEN" or each.get("HKnightmaket","").upper()=="OPEN" or check_hk_time(time_num)):
-                res_data["_id"] = generate_token(each["symbol"], today)
-                insert_list.append(res_data)
+            try:
+                key: str = each["symbol"]
+                start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
+                end_day = datetime.datetime.strptime(each["expirationDate"], bao_time_format)
+                dela = (end_day - start_day).days
+                option_price = each["lastPrice"]  # Replace with the actual market option price
+                current_asset_price = each["underlyingPrice"]  # Replace with the current asset price
+                strike_price = each["strike"]  # Replace with the option's strike price
+                time_to_maturity = dela / 365  # Replace with the time to maturity in years
+                if(each["type"] == 'C'): # call action
+                    vol = implied_volatility(option_price, current_asset_price, strike_price, time_to_maturity,
+                                             free_rate)
+                else:
+                    vol = implied_volatility(option_price, current_asset_price, strike_price, time_to_maturity,
+                                             free_rate, False)
+                if (vol < 0.001 and vol > 0.00001):
+                    print(each)
+                sigma = get_sigma(each.get("sigma"), "HK")
+                delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate,sigma,each["type"])
+                if (option_price == 0):
+                    leverage = 0
+                else:
+                    leverage = current_asset_price / option_price
+                actual_leverage = leverage*delta
+                res_data = {
+                    "symbol": each["symbol"],
+                    "lastPrice":  each["lastPrice"],
+                    "underlyingPrice": each["underlyingPrice"],
+                    "strike": each["strike"],
+                    "dela": dela,
+                    "type": each["type"],
+                    "sigma": vol,
+                    "update_time": today,
+                    "delta": delta,
+                    "leverage": leverage,
+                    "actual_leverage": actual_leverage,
+                    "create_time": datetime.datetime.strptime(today,minute_format)
+                }
+                hk_index_result[key] = res_data
+                time_num = int(today[-4:])
+                if(each.get("HKmaket","").upper()=="OPEN" or each.get("HKnightmaket","").upper()=="OPEN" or check_hk_time(time_num)):
+                    res_data["_id"] = generate_token(each["symbol"], today)
+                    insert_list.append(res_data)
+            except Exception as e:
+                print("Exception", each)
+                print_exc()
         res_dao.insertResult(insert_list, "HK")
     print("calculate_hk_index end", len(insert_list),res.status_code)
 def update_hk_index():
@@ -172,7 +181,10 @@ def update_hk_index():
                     res.append(each)
                 else:
                     break
-        average_leverage = sum([x.get("actual_leverage") for x in res])/len(res)
+        try:
+            average_leverage = sum([x.get("actual_leverage") for x in res])/len(res)
+        except Exception:
+            average_leverage = None
         hk_average_result[key] = average_leverage
 def update_cn_index():
     limit = 350
@@ -189,7 +201,10 @@ def update_cn_index():
                     res.append(each)
                 else:
                     break
-        average_leverage = sum([x.get("actual_leverage") for x in res]) / len(res)
+        try:
+            average_leverage = sum([x.get("actual_leverage") for x in res]) / len(res)
+        except Exception:
+            average_leverage = None
         cn_average_result[key] = average_leverage
 
 if(__name__ == "__main__"):
