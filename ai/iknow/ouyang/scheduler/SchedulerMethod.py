@@ -9,7 +9,7 @@ from dao.ResultDao import res_dao
 from properties import bao_time_format, tushare_time_format, job_times, minute_format, bms_result, risk_free_rate, \
     name_checks, project_base_path, hk_index_result, hk_average_result, cn_average_result
 from utils.AppUtil import generate_token
-from utils.stockUtil import call_BSM, put_BSM, implied_volatility, calculate_delta, get_risk_free_rate
+from utils.stockUtil import call_BSM, put_BSM, implied_volatility, calculate_delta, get_risk_free_rate, get_sigma
 import pandas as pd
 
 
@@ -56,7 +56,11 @@ def get_by_freq():
                                          free_rate, False)
             if (vol < 0.001 and vol > 0.00001):
                 print(each)
-            delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate, dela, each["type"])
+            if(each["symbol"] == "10005789"):
+                print(each)
+                pass
+            sigma = get_sigma(each.get("sigma"),"CN")
+            delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate, sigma, each["type"])
             if(option_price == 0):
                 leverage = 0
             else:
@@ -126,7 +130,8 @@ def calculate_hk_index():
                                          free_rate, False)
             if (vol < 0.001 and vol > 0.00001):
                 print(each)
-            delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate,dela,each["type"])
+            sigma = get_sigma(each.get("sigma"), "HK")
+            delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate,sigma,each["type"])
             if (option_price == 0):
                 leverage = 0
             else:
@@ -189,8 +194,8 @@ def update_cn_index():
         cn_average_result[key] = average_leverage
 
 if(__name__ == "__main__"):
-    print("123456"[-4:])
-    # get_by_freq()
+    # print("123456"[-4:])
+    get_by_freq()
     # getBSM()
     option_price = 437.2 # Replace with the actual market option price
     current_asset_price = 3568.07  # Replace with the current asset price

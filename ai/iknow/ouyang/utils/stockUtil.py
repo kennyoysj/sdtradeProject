@@ -155,20 +155,27 @@ def get_risk_free_rate(az="HK"):
                 time.sleep(10)
         return 2.46
 
+def get_sigma(sigma, az = "HK"):
+    day_of_year = 252
+    return sigma/10000 * np.sqrt(day_of_year)
+
 if __name__ ==  "__main__":
     print(get_risk_free_rate("HK"))
     print(get_risk_free_rate("CN"))
     # Example usage:
-    # option_price = 0.0029  # Replace with the actual market option price
-    # current_asset_price = 3.65  # Replace with the current asset price
-    # strike_price = 3.3 # Replace with the option's strike price
-    # time_to_maturity = 43/365  # Replace with the time to maturity in years
-    # risk_free_rate = 0.0245  # Replace with the risk-free interest rate
+    option_price = 0.0029  # Replace with the actual market option price
+    current_asset_price = 3.463  # Replace with the current asset price
+    strike_price = 4.2 # Replace with the option's strike price
+    time_to_maturity = 43/365  # Replace with the time to maturity in years
+    risk_free_rate = 0.02537 # Replace with the risk-free interest rate
     # implied_volatility_value = implied_volatility(option_price, current_asset_price, strike_price, time_to_maturity,
     #                                               risk_free_rate,True)
     # print("Implied Volatility:", implied_volatility_value)
     # print(black_scholes_call(current_asset_price, strike_price, time_to_maturity, risk_free_rate, 0.00001)
     #       - option_price)
-    print(calculate_delta(3.605,3.400,61/365,0.024620,0.1213,"C"))
-    print(0.76363/100 * np.sqrt(252))
+    T = 112/365
+    sigma = 0.736522/100 * np.sqrt(252)
+    print(sigma)
+    print(calculate_delta(current_asset_price,strike_price,T,risk_free_rate,sigma,"C"))
+    print(0.736522/100 * np.sqrt(252))
 
