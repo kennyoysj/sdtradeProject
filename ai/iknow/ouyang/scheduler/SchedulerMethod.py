@@ -33,12 +33,12 @@ def get_by_freq():
     job_times["get_by_freq%s" % today] = -1
     days = 250
     res = requests.get("https://api.sdqtrade.com/data/option/latest")
+    insert_list = []
     if (res.status_code == 200):
         body = res.json()
         results = body.get("results")
-        print(len(results))
+        print("get_by_freq ",len(results))
         free_rate = float(get_risk_free_rate("CN"))/100
-        insert_list = []
         for each in results:
             key: str = each["symbol"]
             start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
@@ -56,9 +56,6 @@ def get_by_freq():
                                          free_rate, False)
             if (vol < 0.001 and vol > 0.00001):
                 print(each)
-            if(each["symbol"] == "10005789"):
-                print(each)
-                pass
             sigma = get_sigma(each.get("sigma"),"CN")
             delta = calculate_delta(current_asset_price, strike_price, time_to_maturity, free_rate, sigma, each["type"])
             if(option_price == 0):
@@ -86,7 +83,7 @@ def get_by_freq():
                 res_data["_id"] = generate_token(each["symbol"], today)
                 insert_list.append(res_data)
         res_dao.insertResult(insert_list, "CN")
-    print("get_by_freq end",len(bms_result.keys()))
+    print("get_by_freq end", len(insert_list))
 def check_cn_time(time_num:int):
     if((time_num >= 930 and time_num <= 1130) or (1300 <= time_num and time_num <= 1500) ):
         return True
@@ -109,11 +106,11 @@ def calculate_hk_index():
     print("calculate_hk_index start")
     today = datetime.datetime.now().strftime(minute_format)
     res = requests.get("http://192.168.25.127:1680/hk/option/latest")
+    insert_list = []
     if (res.status_code == 200):
         body = res.json()
         results = body.get("results")
         free_rate = get_risk_free_rate("HK")/100
-        insert_list = []
         print("calculate_hk_index len", len(results))
         for each in results:
             key: str = each["symbol"]
@@ -159,7 +156,7 @@ def calculate_hk_index():
                 res_data["_id"] = generate_token(each["symbol"], today)
                 insert_list.append(res_data)
         res_dao.insertResult(insert_list, "HK")
-        print("calculate_hk_index end", len(insert_list))
+    print("calculate_hk_index end", len(insert_list),res.status_code)
 def update_hk_index():
     limit = 1500
     for key in hk_index_result.keys():
