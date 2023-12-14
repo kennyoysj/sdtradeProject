@@ -6,6 +6,7 @@ from traceback import print_exc
 
 import requests
 
+from dao.InfoDao import info_dao, async_insert
 from dao.ResultDao import res_dao
 from properties import bao_time_format, tushare_time_format, job_times, minute_format, bms_result, risk_free_rate, \
     name_checks, project_base_path, hk_index_result, hk_average_result, cn_average_result
@@ -118,6 +119,7 @@ def calculate_hk_index():
         free_rate = get_risk_free_rate("HK")/100
         print("calculate_hk_index len", len(results))
         for each in results:
+            each["create_time"] = today
             try:
                 key: str = each["symbol"]
                 start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
@@ -165,6 +167,7 @@ def calculate_hk_index():
                 print("Exception", each)
                 print_exc()
         res_dao.insertResult(insert_list, "HK")
+        async_insert(results)
     print("calculate_hk_index end", len(insert_list),res.status_code)
 def update_hk_index():
     limit = 1500

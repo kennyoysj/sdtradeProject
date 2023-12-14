@@ -163,19 +163,19 @@ if __name__ ==  "__main__":
     print(get_risk_free_rate("HK"))
     print(get_risk_free_rate("CN"))
     # Example usage:
-    option_price = 0.0029  # Replace with the actual market option price
-    current_asset_price = 3.463  # Replace with the current asset price
-    strike_price = 4.2 # Replace with the option's strike price
-    time_to_maturity = 43/365  # Replace with the time to maturity in years
-    risk_free_rate = 0.02537 # Replace with the risk-free interest rate
+    option_price = 0.1024  # Replace with the actual market option price
+    current_asset_price = 3.45  # Replace with the current asset price
+    strike_price = 3.5 # Replace with the option's strike price
+    time_to_maturity = 48/365  # Replace with the time to maturity in years
+    risk_free_rate = 0.02554 # Replace with the risk-free interest rate
     # implied_volatility_value = implied_volatility(option_price, current_asset_price, strike_price, time_to_maturity,
     #                                               risk_free_rate,True)
     # print("Implied Volatility:", implied_volatility_value)
     # print(black_scholes_call(current_asset_price, strike_price, time_to_maturity, risk_free_rate, 0.00001)
     #       - option_price)
-    T = 112/365
-    sigma = 0.736522/100 * np.sqrt(252)
+    T = 48/365
+    sigma = 0.116
     print(sigma)
-    print(calculate_delta(current_asset_price,strike_price,T,risk_free_rate,sigma,"C"))
+    print(calculate_delta(current_asset_price,strike_price,T,risk_free_rate,sigma,"P"))
     print(0.736522/100 * np.sqrt(252))
 
