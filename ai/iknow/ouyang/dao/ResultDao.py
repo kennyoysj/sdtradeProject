@@ -9,10 +9,17 @@ class ResultDao():
         self.mon_conn = mongo_conn
 
 
-    def insertResult(self,datas,az):
+    def insertResult(self,datas:list,az):
         if(datas == []): return
         col = self.mon_conn[az]
-        col.insert_many(datas)
+        # ids = [x["_id"] for x in datas]
+        # res = col.find({"_id":{"$in": ids}})
+        # inIds = [x["_id"] for x in res]
+        # inserts = []
+        # for each in datas:
+        #     if(each not in inIds):
+        #         inserts.append(each)
+        col.insert_many(datas,ordered=False)
 
     def getResult(self, az:str, symbol, limit = 1000):
         az = az.upper()

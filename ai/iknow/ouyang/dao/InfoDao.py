@@ -21,10 +21,10 @@ class InfoDao():
         col = self.get_az_col(az)
         today = datetime.datetime.now().strftime(minute_format)
         for each in infos:
-            if(each.get("create_time") is None):
-                each["create_time"] = today
-            each["_id"] = generate_token(each["symbol"]+ each["create_time"])
-        col.insert_many(infos)
+            if(each.get("close_time") is None):
+                each["close_time"] = today
+            each["_id"] = generate_token(each["symbol"] + each["close_time"])
+        col.insert_many(infos,ordered=False)
 
     def get_az_col(self,az):
         key = "info%s" % az

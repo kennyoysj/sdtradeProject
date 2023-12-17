@@ -111,6 +111,7 @@ def calculate_hk_index():
     """
     print("calculate_hk_index start")
     today = datetime.datetime.now().strftime(minute_format)
+    hm = int(today[-4:])
     res = requests.get("http://192.168.25.127:1680/hk/option/latest")
     insert_list = []
     if (res.status_code == 200):
@@ -122,6 +123,10 @@ def calculate_hk_index():
             each["create_time"] = today
             try:
                 key: str = each["symbol"]
+                close_time = each["closeTime"]
+                closeTime = datetime.datetime.fromtimestamp(close_time).strftime(minute_format)
+                # if(get_hk_hmtime(hm) - get_hk_hmtime(closeTime) > 5):
+                #     continue
                 start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
                 end_day = datetime.datetime.strptime(each["expirationDate"], bao_time_format)
                 dela = (end_day - start_day).days
@@ -156,12 +161,13 @@ def calculate_hk_index():
                     "delta": delta,
                     "leverage": leverage,
                     "actual_leverage": actual_leverage,
+                    "close_time": closeTime,
                     "create_time": datetime.datetime.strptime(today,minute_format)
                 }
                 hk_index_result[key] = res_data
                 time_num = int(today[-4:])
                 if(each.get("HKmaket","").upper()=="OPEN" or each.get("HKnightmaket","").upper()=="OPEN" or check_hk_time(time_num)):
-                    res_data["_id"] = generate_token(each["symbol"], today)
+                    res_data["_id"] = generate_token(each["symbol"], closeTime)
                     insert_list.append(res_data)
             except Exception as e:
                 print("Exception", each)
@@ -169,6 +175,9 @@ def calculate_hk_index():
         res_dao.insertResult(insert_list, "HK")
         info_dao.insert_az_infos(results, "HK")
     print("calculate_hk_index end", len(insert_list),res.status_code)
+
+def get_hk_hmtime(hm:int):
+    return (hm - 800) %2400
 def update_hk_index():
     limit = 1500
     for key in hk_index_result.keys():

@@ -27,3 +27,5 @@ if (option_price == 0):
 else:
     leverage = current_asset_price / option_price
 actual_leverage = leverage*delta
+
+print((300-800)%2400)
