@@ -195,7 +195,7 @@ def update_hk_index():
                 else:
                     break
         try:
-            average_leverage = sum([x.get("actual_leverage") for x in res])/len(res)
+            average_leverage = sum([x.get("actual_leverage") if(x.get("actual_leverage") is not None) else 0 for x in res])/len(res)
         except Exception:
             average_leverage = None
         hk_average_result[key] = average_leverage
