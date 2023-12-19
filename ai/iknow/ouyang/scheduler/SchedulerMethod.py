@@ -124,7 +124,7 @@ def calculate_hk_index():
             try:
                 key: str = each["symbol"]
                 close_time = each["closeTime"]
-                closeTime = datetime.datetime.fromtimestamp(close_time).strftime(minute_format)
+                closeTime = datetime.datetime.fromtimestamp(close_time/1000).strftime(minute_format)
                 # if(get_hk_hmtime(hm) - get_hk_hmtime(closeTime) > 5):
                 #     continue
                 start_day = datetime.datetime.strptime(datetime.datetime.now().strftime(bao_time_format), bao_time_format)
@@ -173,7 +173,8 @@ def calculate_hk_index():
                 print("Exception", each)
                 print_exc()
         res_dao.insertResult(insert_list, "HK")
-        info_dao.insert_az_infos(results, "HK")
+        async_insert(results)
+        # info_dao.insert_az_infos(results, "HK")
     print("calculate_hk_index end", len(insert_list),res.status_code)
 
 def get_hk_hmtime(hm:int):
