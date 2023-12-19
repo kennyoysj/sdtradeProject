@@ -173,8 +173,8 @@ def calculate_hk_index():
                 print("Exception", each)
                 print_exc()
         res_dao.insertResult(insert_list, "HK")
-        async_insert(results)
-        # info_dao.insert_az_infos(results, "HK")
+        # async_insert(results)
+        info_dao.insert_az_infos(results, "HK")
     print("calculate_hk_index end", len(insert_list),res.status_code)
 
 def get_hk_hmtime(hm:int):
