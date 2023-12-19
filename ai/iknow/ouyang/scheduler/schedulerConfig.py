@@ -37,12 +37,20 @@ def init_scheduler():
         "type": "interval",
         'seconds': 60
     }, calculate_hk_index, None))
-    jobs.append(scheduler_factory.get_job_info("update_hk_index", "update_hk_index", {
+    jobs.append(scheduler_factory.get_job_info("update_hk_index_d", "update_hk_index_d", {
         "type": "cron",
         "hour": 16,
         "minute": 5,
         "second": 5
     }, update_hk_index, None))
+
+    jobs.append(scheduler_factory.get_job_info("update_hk_index_n", "update_hk_index_n", {
+        "type": "cron",
+        "hour": 3,
+        "minute": 5,
+        "second": 5
+    }, update_hk_index, None))
+
     jobs.append(scheduler_factory.get_job_info("update_cn_index", "update_cn_index", {
         "type": "cron",
         "hour": 15,

@@ -161,6 +161,7 @@ def calculate_hk_index():
                     "delta": delta,
                     "leverage": leverage,
                     "actual_leverage": actual_leverage,
+                    "tradeTime": each.get("tradeTime","D"),
                     "close_time": closeTime,
                     "create_time": datetime.datetime.strptime(today,minute_format)
                 }
@@ -179,26 +180,29 @@ def calculate_hk_index():
 
 def get_hk_hmtime(hm:int):
     return (hm - 800) %2400
+
+
 def update_hk_index():
     limit = 1500
     for key in hk_index_result.keys():
         results = res_dao.getResult("hk", key, limit)
         results.reverse()
         res = []
-        index = 0
+        d_o_n = None
         while(len(results) > 0):
             each = results.pop()
-            if(each.get("update_time")[-4:] == "1600"):
-                index += 1
-                if(index < 2 and index > 0):
-                    res.append(each)
-                else:
-                    break
+            if(d_o_n is None):
+                d_o_n = each.get("tradeTime","D")
+            if(each.get("tradeTime") == d_o_n):
+                res.append(each)
+            else:
+                break
         try:
             average_leverage = sum([x.get("actual_leverage") if(x.get("actual_leverage") is not None) else 0 for x in res])/len(res)
         except Exception:
             average_leverage = None
         hk_average_result[key] = average_leverage
+
 def update_cn_index():
     limit = 350
     for key in bms_result.keys():
@@ -215,7 +219,7 @@ def update_cn_index():
                 else:
                     break
         try:
-            average_leverage = sum([x.get("actual_leverage") for x in res]) / len(res)
+            average_leverage = sum([x.get("actual_leverage") if(x.get("actual_leverage") is not None) else 0 for x in res])/len(res)
         except Exception:
             average_leverage = None
         cn_average_result[key] = average_leverage
